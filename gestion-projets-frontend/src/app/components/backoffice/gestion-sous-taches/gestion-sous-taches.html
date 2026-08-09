@@ -1,0 +1,95 @@
+<div class="bo-page">
+  <div class="page-header">
+    <div>
+      <h2>📋 Gestion des Sous-tâches</h2>
+      <p>Créez, modifiez et gérez les sous-tâches</p>
+    </div>
+    <button (click)="openCreateForm()" class="btn btn-primary">
+      + Nouvelle Sous-tâche
+    </button>
+  </div>
+
+  <!-- Formulaire -->
+  <div *ngIf="showForm()" class="form-container">
+    <h3>{{ editingId() ? '✏️ Modifier' : '➕ Ajouter' }} une sous-tâche</h3>
+    
+    <div class="form-group">
+      <label>Tâche parente *</label>
+      <select [(ngModel)]="formData.tacheId" class="form-control">
+        <option [value]="undefined">Sélectionner une tâche</option>
+        <option *ngFor="let tache of taches()" [value]="tache.id">
+          {{ tache.titre }} ({{ tache.projetId }})
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Titre *</label>
+      <input type="text" [(ngModel)]="formData.titre" class="form-control" placeholder="Titre de la sous-tâche" />
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea [(ngModel)]="formData.description" class="form-control" rows="3" placeholder="Description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>
+        <input type="checkbox" [(ngModel)]="formData.terminee" />
+        Terminée
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button (click)="saveSousTache()" class="btn btn-success" [disabled]="loading()">
+        {{ loading() ? 'Enregistrement...' : (editingId() ? 'Modifier' : 'Ajouter') }}
+      </button>
+      <button (click)="cancelForm()" class="btn btn-secondary">Annuler</button>
+    </div>
+  </div>
+
+  <!-- Liste -->
+  <div *ngIf="loading() && !showForm()" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading() && sousTaches().length === 0 && !showForm()" class="empty-state">
+    <p>Aucune sous-tâche trouvée</p>
+    <button (click)="openCreateForm()" class="btn btn-primary">Créer une sous-tâche</button>
+  </div>
+
+  <div class="table-container" *ngIf="!loading() && sousTaches().length > 0 && !showForm()">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Tâche parente</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sous of sousTaches()">
+          <td>{{ sous.id }}</td>
+          <td><strong>{{ sous.titre }}</strong></td>
+          <td>{{ sous.description | slice:0:50 }}{{ sous.description?.length > 50 ? '...' : '' }}</td>
+          <td>{{ getTacheName(sous.tacheId!) }}</td>
+          <td>
+            <span class="status-badge" [class.status-done]="sous.terminee" [class.status-todo]="!sous.terminee">
+              {{ sous.terminee ? '✅ Terminée' : '⏳ En cours' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button (click)="toggleSousTache(sous.id!)" class="btn-toggle" [title]="sous.terminee ? 'Marquer comme non terminée' : 'Marquer comme terminée'">
+              {{ sous.terminee ? '↩️' : '✅' }}
+            </button>
+            <button (click)="openEditForm(sous)" class="btn-edit">✏️</button>
+            <button (click)="deleteSousTache(sous.id!)" class="btn-delete">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

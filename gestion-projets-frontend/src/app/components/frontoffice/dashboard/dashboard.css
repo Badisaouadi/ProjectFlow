@@ -1,0 +1,270 @@
+.fo-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dash-header {
+  background: white;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.dash-header h2 {
+  margin: 0;
+  color: #1A1A1A;
+  font-size: 22px;
+}
+
+.dash-header p {
+  margin: 4px 0 0 0;
+  color: #6B7280;
+  font-size: 13px;
+}
+
+/* STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid #F97316;
+}
+
+.stat-icon { font-size: 30px; }
+.stat-info { flex: 1; }
+.stat-info h3 { font-size: 26px; margin: 0; color: #F97316; }
+.stat-info p { margin: 0; color: #6B7280; font-size: 13px; }
+
+.mini-progress {
+  width: 100%;
+  height: 5px;
+  background: #F3F4F6;
+  border-radius: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.mini-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* SECTIONS */
+.section {
+  background: white;
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.section h3 {
+  margin: 0 0 18px 0;
+  color: #1F2937;
+  font-size: 16px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.section-header h3 { margin: 0; }
+
+.legend {
+  display: flex;
+  gap: 16px;
+}
+
+.legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.dot.todo, .bar-segment.todo, .resume-dot.todo { background: #F59E0B; }
+.dot.progress, .bar-segment.progress, .resume-dot.progress { background: #3B82F6; }
+.dot.done, .bar-segment.done, .resume-dot.done { background: #22C55E; }
+
+/* BAR CHART */
+.chart-wrapper {
+  overflow-x: auto;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  height: 220px;
+  padding: 10px 6px;
+  min-width: 480px;
+}
+
+.bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.bars {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  justify-content: center;
+}
+
+.bar-stack {
+  width: 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+  background: #F9FAFB;
+}
+
+.bar-segment {
+  width: 100%;
+  transition: height 0.5s ease;
+  min-height: 0;
+}
+
+.bar-total {
+  font-size: 11px;
+  font-weight: 700;
+  color: #4B5563;
+}
+
+.bar-label {
+  font-size: 12px;
+  color: #6B7280;
+  white-space: nowrap;
+}
+
+/* TAUX LIST */
+.taux-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.taux-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 44px;
+  align-items: center;
+  gap: 12px;
+}
+
+.taux-mois {
+  font-size: 13px;
+  color: #4B5563;
+  font-weight: 500;
+}
+
+.taux-track {
+  height: 10px;
+  background: #F3F4F6;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.taux-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+}
+
+.taux-value {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* RESUME */
+.resume-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.resume-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #F9FAFB;
+  border-radius: 10px;
+}
+
+.resume-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.resume-label {
+  flex: 1;
+  font-size: 13px;
+  color: #4B5563;
+}
+
+.resume-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+/* SPINNER */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 4px solid #FDE8D5;
+  border-top-color: #F97316;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 600px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .taux-row { grid-template-columns: 80px 1fr 36px; }
+}

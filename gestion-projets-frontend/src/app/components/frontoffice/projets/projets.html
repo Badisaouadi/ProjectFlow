@@ -1,0 +1,94 @@
+<div class="fo-projets">
+  <div class="page-header">
+    <h2>📋 Mes Projets</h2>
+  </div>
+
+  <div *ngIf="error()" class="error-message">{{ error() }}</div>
+
+  <div *ngIf="loading()" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading() && projets().length === 0" class="empty-state">
+    <p>Aucun projet disponible pour le moment</p>
+  </div>
+
+  <div class="projets-grid" *ngIf="!loading() && projets().length > 0">
+    <div class="projet-card" *ngFor="let projet of projets()" (click)="openDetail(projet)">
+      <h3>{{ projet.nom }}</h3>
+      <p class="projet-desc">{{ projet.description || 'Aucune description' }}</p>
+
+      <div class="projet-progress">
+        <div class="progress-track">
+          <div class="progress-fill" [style.width.%]="projet.taux"></div>
+        </div>
+        <span class="progress-text">{{ projet.taux }}%</span>
+      </div>
+
+      <div class="projet-footer">
+        <span class="date" *ngIf="projet.dateCreation">
+          📅 {{ projet.dateCreation | date:'dd/MM/yyyy' }}
+        </span>
+        <span class="badge">
+          {{ projet.tachesTerminees }}/{{ projet.nombreTaches }} tâches
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DÉTAIL PROJET -->
+  <div class="modal-overlay" *ngIf="showModal()" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="selectedProjet() as projet">
+      <div class="modal-header">
+        <h3>{{ projet.nom }}</h3>
+        <button class="modal-close" (click)="closeModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-desc">{{ projet.description || 'Aucune description' }}</p>
+
+        <div class="modal-stats">
+          <div class="modal-stat">
+            <span class="stat-value">{{ projet.nombreTaches }}</span>
+            <span class="stat-label">Tâches</span>
+          </div>
+          <div class="modal-stat">
+            <span class="stat-value">{{ projet.tachesTerminees }}</span>
+            <span class="stat-label">Terminées</span>
+          </div>
+          <div class="modal-stat">
+            <span class="stat-value">{{ projet.taux }}%</span>
+            <span class="stat-label">Avancement</span>
+          </div>
+        </div>
+
+        <div class="taches-section">
+          <h4>📋 Tâches du projet</h4>
+
+          <div *ngIf="loadingTaches()" class="mini-spinner-wrap">
+            <div class="mini-spinner"></div>
+          </div>
+
+          <div *ngIf="!loadingTaches() && tachesDuProjet().length === 0" class="empty-taches">
+            Aucune tâche pour ce projet
+          </div>
+
+          <div class="taches-list" *ngIf="!loadingTaches()">
+            <div *ngFor="let tache of tachesDuProjet()" class="tache-item">
+              <span class="tache-titre">{{ tache.titre }}</span>
+              <span class="tache-statut" [class]="getStatutClass(tache.statut)">
+                {{ getStatutLabel(tache.statut) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-goto-board" (click)="goToBoard()">
+            📌 Voir sur le Board Kanban
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

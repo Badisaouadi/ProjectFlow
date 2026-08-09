@@ -1,0 +1,72 @@
+<div class="auth-container">
+  <div class="auth-bg-shape shape-1"></div>
+  <div class="auth-bg-shape shape-2"></div>
+
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-icon">🔐</div>
+      <h2>Bon retour !</h2>
+      <p>Connectez-vous à <strong>GestionProjets</strong></p>
+    </div>
+
+    <div *ngIf="error()" class="alert alert-error">
+      <span class="alert-icon">⚠️</span>
+      {{ error() }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="auth-form">
+      <div class="form-group">
+        <label for="email">Adresse email</label>
+        <div class="input-wrapper">
+          <span class="input-icon">📧</span>
+          <input
+            id="email"
+            type="email"
+            [(ngModel)]="credentials.email"
+            name="email"
+            placeholder="exemple@email.com"
+            required
+            autocomplete="email"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="motDePasse">Mot de passe</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔑</span>
+          <input
+            id="motDePasse"
+            type="password"
+            [(ngModel)]="credentials.motDePasse"
+            name="motDePasse"
+            placeholder="Votre mot de passe"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="loading()"
+      >
+        <span *ngIf="!loading()">Se connecter</span>
+        <span *ngIf="loading()" class="btn-loading">
+          <span class="btn-spinner"></span>
+          Connexion...
+        </span>
+      </button>
+    </form>
+
+    <div class="auth-divider">
+      <span>ou</span>
+    </div>
+
+    <div class="auth-footer">
+      <p>Pas encore de compte ?</p>
+      <a routerLink="/register">Créer un compte gratuitement →</a>
+    </div>
+  </div>
+</div>

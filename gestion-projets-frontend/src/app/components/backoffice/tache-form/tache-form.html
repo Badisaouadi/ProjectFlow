@@ -1,0 +1,76 @@
+<div class="bo-page">
+  <div class="page-header">
+    <div>
+      <h2>{{ isEditMode() ? '✏️ Modifier la tâche' : '➕ Nouvelle tâche' }}</h2>
+      <p>{{ isEditMode() ? 'Modifiez les informations de la tâche' : 'Créez une nouvelle tâche' }}</p>
+    </div>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" class="form-container">
+    <div class="form-group">
+      <label>Projet *</label>
+      <select [(ngModel)]="tache.projetId" name="projetId" class="form-control" required>
+        <option [ngValue]="undefined">Sélectionner un projet</option>
+        <option *ngFor="let projet of projets()" [ngValue]="projet.id">{{ projet.nom }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Titre *</label>
+      <input
+        type="text"
+        [(ngModel)]="tache.titre"
+        name="titre"
+        class="form-control"
+        placeholder="Ex: Développer l'API REST"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea
+        [(ngModel)]="tache.description"
+        name="description"
+        class="form-control"
+        rows="4"
+        placeholder="Décrivez la tâche en détail..."
+      ></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Statut *</label>
+        <select [(ngModel)]="tache.statut" name="statut" class="form-control" required>
+          <option *ngFor="let statut of statuts" [value]="statut">{{ getStatutLabel(statut) }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Priorité *</label>
+        <select [(ngModel)]="tache.priorite" name="priorite" class="form-control" required>
+          <option *ngFor="let priorite of priorites" [value]="priorite">{{ priorite }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Date d'échéance</label>
+      <input
+        type="date"
+        [(ngModel)]="tache.dateEcheance"
+        name="dateEcheance"
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success" [disabled]="loading()">
+        {{ loading() ? 'Enregistrement...' : (isEditMode() ? 'Modifier' : 'Créer') }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading()">
+        Annuler
+      </button>
+    </div>
+  </form>
+</div>

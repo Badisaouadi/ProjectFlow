@@ -1,0 +1,42 @@
+<div class="bo-page">
+  <div class="page-header">
+    <div>
+      <h2>{{ isEditMode() ? '✏️ Modifier le projet' : '➕ Nouveau projet' }}</h2>
+      <p>{{ isEditMode() ? 'Modifiez les informations du projet' : 'Créez un nouveau projet' }}</p>
+    </div>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" class="form-container">
+    <div class="form-group">
+      <label>Nom du projet *</label>
+      <input
+        type="text"
+        [(ngModel)]="projet.nom"
+        name="nom"
+        class="form-control"
+        placeholder="Ex: Développement application mobile"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea
+        [(ngModel)]="projet.description"
+        name="description"
+        class="form-control"
+        rows="5"
+        placeholder="Décrivez le projet en détail..."
+      ></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success" [disabled]="loading()">
+        {{ loading() ? 'Enregistrement...' : (isEditMode() ? 'Modifier' : 'Créer') }}
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading()">
+        Annuler
+      </button>
+    </div>
+  </form>
+</div>

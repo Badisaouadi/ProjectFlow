@@ -1,0 +1,97 @@
+<div class="bo-page">
+  <div class="page-header">
+    <div>
+      <h2>📈 Statistiques</h2>
+      <p>Analyses détaillées de l'activité</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading()" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading()">
+    <!-- Vue d'ensemble -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📋</div>
+        <div class="stat-info">
+          <h3>{{ totalProjets() }}</h3>
+          <p>Projets</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <h3>{{ totalTaches() }}</h3>
+          <p>Tâches</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <h3>{{ totalUtilisateurs() }}</h3>
+          <p>Utilisateurs</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-info">
+          <h3>{{ tauxAvancement() }}%</h3>
+          <p>Avancement global</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Répartition par statut -->
+    <div class="section">
+      <h3>📌 Répartition par statut</h3>
+      <div class="bar-list">
+        <div class="bar-row">
+          <span class="bar-label">À faire</span>
+          <div class="bar-track">
+            <div class="bar-fill todo" [style.width.%]="getPercent(tachesAFaire())"></div>
+          </div>
+          <span class="bar-value">{{ tachesAFaire() }}</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">En cours</span>
+          <div class="bar-track">
+            <div class="bar-fill progress" [style.width.%]="getPercent(tachesEnCours())"></div>
+          </div>
+          <span class="bar-value">{{ tachesEnCours() }}</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Terminé</span>
+          <div class="bar-track">
+            <div class="bar-fill done" [style.width.%]="getPercent(tachesTerminees())"></div>
+          </div>
+          <span class="bar-value">{{ tachesTerminees() }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Répartition par priorité -->
+    <div class="section">
+      <h3>🎯 Répartition par priorité</h3>
+      <div class="priorite-grid">
+        <div class="priorite-item">
+          <span class="label">Critique</span>
+          <span class="value critique">{{ tachesCritiques() }}</span>
+        </div>
+        <div class="priorite-item">
+          <span class="label">Haute</span>
+          <span class="value haute">{{ tachesHaute() }}</span>
+        </div>
+        <div class="priorite-item">
+          <span class="label">Moyenne</span>
+          <span class="value moyenne">{{ tachesMoyenne() }}</span>
+        </div>
+        <div class="priorite-item">
+          <span class="label">Basse</span>
+          <span class="value basse">{{ tachesBasse() }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

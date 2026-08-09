@@ -1,0 +1,41 @@
+<div class="sous-tache-container">
+  <h4>Sous-tâches</h4>
+  
+  <button class="btn-add-sous" (click)="showForm = !showForm">
+    + Ajouter une sous-tâche
+  </button>
+
+  <div *ngIf="showForm" class="sous-form">
+    <input 
+      type="text" 
+      [(ngModel)]="newSousTache.titre" 
+      placeholder="Titre de la sous-tâche"
+      class="form-control"
+    />
+    <input 
+      type="text" 
+      [(ngModel)]="newSousTache.description" 
+      placeholder="Description"
+      class="form-control"
+    />
+    <div class="form-actions">
+      <button (click)="addSousTache()" class="btn-save">Ajouter</button>
+      <button (click)="showForm = false" class="btn-cancel">Annuler</button>
+    </div>
+  </div>
+
+  <div *ngFor="let sous of sousTaches" class="sous-item">
+    <div class="sous-content">
+      <input 
+        type="checkbox" 
+        [(ngModel)]="sous.terminee"
+        (change)="toggleTerminee(sous)"
+      />
+      <div [class.terminee]="sous.terminee">
+        <strong>{{ sous.titre }}</strong>
+        <span class="description">{{ sous.description }}</span>
+      </div>
+      <button (click)="deleteSousTache(sous.id!)" class="btn-delete">🗑️</button>
+    </div>
+  </div>
+</div>

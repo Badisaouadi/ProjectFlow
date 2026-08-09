@@ -1,0 +1,49 @@
+name: CI - Build & Test ProjectFlow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-backend:
+    name: Build Backend (Spring Boot)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Configurer JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+          cache-dependency-path: GestionProjets/backend/gestion-projets/pom.xml
+
+      - name: Compiler le backend
+        working-directory: GestionProjets/backend/gestion-projets
+        run: ./mvnw clean compile
+
+  build-frontend:
+    name: Build Frontend (Angular)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Configurer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: gestion-projets-frontend/package-lock.json
+
+      - name: Installer les dépendances
+        working-directory: gestion-projets-frontend
+        run: npm ci
+
+      - name: Build de production
+        working-directory: gestion-projets-frontend
+        run: npm run build

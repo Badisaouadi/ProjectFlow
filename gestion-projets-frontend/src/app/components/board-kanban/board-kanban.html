@@ -1,0 +1,37 @@
+<div class="container">
+  <h2>📌 Board Kanban</h2>
+  
+  <div class="board">
+    <div class="column" *ngFor="let statut of [statuts.A_FAIRE, statuts.EN_COURS, statuts.TERMINE]">
+      <div class="column-header" [style.background]="getStatutColor(statut)">
+        <h3>{{ getStatutLabel(statut) }}</h3>
+        <span class="count">{{ getTachesByStatut(statut).length }}</span>
+      </div>
+      
+      <div class="column-body">
+        <div *ngFor="let tache of getTachesByStatut(statut)" class="card">
+          <h4>{{ tache.titre }}</h4>
+          <p>{{ tache.description }}</p>
+          <div class="card-footer">
+            <span class="priority" [class]="tache.priorite.toLowerCase()">
+              {{ tache.priorite }}
+            </span>
+            <button 
+              (click)="toggleSousTaches(tache.id!)" 
+              class="btn-sous-taches"
+              [class.active]="expandedTache === tache.id"
+            >
+              📋 {{ (tache.sousTaches?.length || 0) }}
+            </button>
+          </div>
+          
+          <!-- Affichage des sous-tâches -->
+          <div *ngIf="expandedTache === tache.id" class="sous-taches-container">
+            <app-sous-tache-list [tacheId]="tache.id!"></app-sous-tache-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

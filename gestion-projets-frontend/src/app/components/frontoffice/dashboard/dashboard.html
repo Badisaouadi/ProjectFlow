@@ -1,0 +1,113 @@
+<div class="fo-dashboard">
+  <div class="dash-header">
+    <div>
+      <h2>📈 Dashboard</h2>
+      <p>Visibilité claire sur votre performance et votre rythme d'avancement</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading()" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading()">
+    <!-- Indicateurs globaux -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📋</div>
+        <div class="stat-info">
+          <h3>{{ totalProjets() }}</h3>
+          <p>Projets</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <h3>{{ totalTaches() }}</h3>
+          <p>Tâches totales</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🔄</div>
+        <div class="stat-info">
+          <h3>{{ tachesEnCours() }}</h3>
+          <p>En cours</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-info">
+          <h3>{{ tauxAvancement() }}%</h3>
+          <p>Taux d'avancement</p>
+          <div class="mini-progress">
+            <div class="mini-progress-fill" [style.width.%]="tauxAvancement()" [style.background]="getProgressColor(tauxAvancement())"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graphique évolution mensuelle -->
+    <div class="section">
+      <div class="section-header">
+        <h3>📅 Évolution mensuelle</h3>
+        <div class="legend">
+          <span><i class="dot todo"></i> À faire</span>
+          <span><i class="dot progress"></i> En cours</span>
+          <span><i class="dot done"></i> Terminées</span>
+        </div>
+      </div>
+
+      <div class="chart-wrapper" *ngIf="moisStats().length > 0">
+        <div class="bar-chart">
+          <div class="bar-group" *ngFor="let m of moisStats()">
+            <div class="bars">
+              <div class="bar-stack">
+                <div class="bar-segment done" [style.height.%]="getBarHeight(m.terminees)" [title]="m.terminees + ' terminées'"></div>
+                <div class="bar-segment progress" [style.height.%]="getBarHeight(m.enCours)" [title]="m.enCours + ' en cours'"></div>
+                <div class="bar-segment todo" [style.height.%]="getBarHeight(m.aFaire)" [title]="m.aFaire + ' à faire'"></div>
+              </div>
+            </div>
+            <div class="bar-total" *ngIf="m.total > 0">{{ m.total }}</div>
+            <div class="bar-label">{{ m.label }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Taux d'avancement par mois -->
+    <div class="section">
+      <h3>🎯 Taux d'avancement par mois</h3>
+      <div class="taux-list">
+        <div class="taux-row" *ngFor="let m of moisStats()">
+          <span class="taux-mois">{{ m.label }}</span>
+          <div class="taux-track">
+            <div class="taux-fill" [style.width.%]="m.taux" [style.background]="getProgressColor(m.taux)"></div>
+          </div>
+          <span class="taux-value" [style.color]="getProgressColor(m.taux)">{{ m.taux }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Résumé statuts -->
+    <div class="section">
+      <h3>📌 Résumé global des statuts</h3>
+      <div class="resume-grid">
+        <div class="resume-item">
+          <span class="resume-dot todo"></span>
+          <span class="resume-label">À faire</span>
+          <span class="resume-value">{{ tachesAFaire() }}</span>
+        </div>
+        <div class="resume-item">
+          <span class="resume-dot progress"></span>
+          <span class="resume-label">En cours</span>
+          <span class="resume-value">{{ tachesEnCours() }}</span>
+        </div>
+        <div class="resume-item">
+          <span class="resume-dot done"></span>
+          <span class="resume-label">Terminées</span>
+          <span class="resume-value">{{ tachesTerminees() }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

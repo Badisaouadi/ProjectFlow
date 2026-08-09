@@ -1,0 +1,96 @@
+<div class="bo-page">
+  <div class="page-header">
+    <div>
+      <h2>📊 Tableau de bord</h2>
+      <p>Bienvenue dans l'espace d'administration, <strong>{{ authService.currentUser()?.prenom }}</strong> 👋</p>
+    </div>
+    <span class="date">📅 {{ today | date:'dd/MM/yyyy' }}</span>
+  </div>
+
+  <!-- Statistiques -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-info">
+        <h3>{{ totalProjets() }}</h3>
+        <p>Projets</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <h3>{{ totalTaches() }}</h3>
+        <p>Tâches</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-info">
+        <h3>{{ totalUtilisateurs() }}</h3>
+        <p>Utilisateurs</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-info">
+        <h3>{{ tauxAvancement() }}%</h3>
+        <p>Avancement</p>
+        <div class="progress-bar">
+          <div class="progress-fill" 
+               [style.width.%]="tauxAvancement()" 
+               [style.background]="getProgressColor()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Derniers projets -->
+  <div class="section">
+    <div class="section-header">
+      <h3>📋 Derniers projets</h3>
+      <a routerLink="/admin/projets" class="btn-link">Voir tout →</a>
+    </div>
+    
+    <div *ngIf="loading()" class="loading-spinner">
+      <div class="spinner"></div>
+    </div>
+
+    <div *ngIf="!loading() && derniersProjets().length === 0" class="empty-state">
+      Aucun projet trouvé
+    </div>
+
+    <div class="projets-list" *ngIf="!loading() && derniersProjets().length > 0">
+      <div *ngFor="let projet of derniersProjets()" class="projet-item">
+        <div class="projet-info">
+          <span class="projet-name">{{ projet.nom }}</span>
+          <span class="projet-date">{{ projet.dateCreation | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <span class="badge badge-info">{{ projet.taches?.length || 0 }} tâches</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="section">
+    <h3>⚡ Actions rapides</h3>
+    <div class="actions-grid">
+      <a routerLink="/admin/projets" class="action-card">
+        <span class="action-icon">📋</span>
+        <span>Gérer les projets</span>
+      </a>
+      <a routerLink="/admin/taches" class="action-card">
+        <span class="action-icon">✅</span>
+        <span>Gérer les tâches</span>
+      </a>
+      <a routerLink="/admin/utilisateurs" class="action-card">
+        <span class="action-icon">👥</span>
+        <span>Gérer les utilisateurs</span>
+      </a>
+      <a routerLink="/admin/statistiques" class="action-card">
+        <span class="action-icon">📈</span>
+        <span>Voir les statistiques</span>
+      </a>
+    </div>
+  </div>
+</div>

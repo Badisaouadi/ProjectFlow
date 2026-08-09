@@ -1,0 +1,58 @@
+<div class="bo-page">
+  <div class="page-header">
+    <div>
+      <h2>✅ Gestion des Tâches</h2>
+      <p>Créez, modifiez et supprimez des tâches</p>
+    </div>
+    <button routerLink="/admin/taches/new" class="btn btn-primary">
+      + Nouvelle Tâche
+    </button>
+  </div>
+
+  <div *ngIf="loading()" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading() && taches().length === 0" class="empty-state">
+    <p>Aucune tâche trouvée</p>
+    <button routerLink="/admin/taches/new" class="btn btn-primary">Créer une tâche</button>
+  </div>
+
+  <div class="table-container" *ngIf="!loading() && taches().length > 0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Titre</th>
+          <th>Projet</th>
+          <th>Statut</th>
+          <th>Priorité</th>
+          <th>Échéance</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tache of taches()">
+          <td>{{ tache.id }}</td>
+          <td><strong>{{ tache.titre }}</strong></td>
+          <td>{{ getProjetNom(tache.projetId) }}</td>
+          <td>
+            <span class="status-badge" [class]="getStatutClass(tache.statut)">
+              {{ statutLabels[tache.statut] }}
+            </span>
+          </td>
+          <td>
+            <span class="priority-badge" [class]="tache.priorite.toLowerCase()">
+              {{ tache.priorite }}
+            </span>
+          </td>
+          <td>{{ tache.dateEcheance ? (tache.dateEcheance | date:'dd/MM/yyyy') : '-' }}</td>
+          <td class="actions">
+            <button [routerLink]="['/admin/taches/edit', tache.id]" class="btn-edit">✏️</button>
+            <button (click)="deleteTache(tache.id!)" class="btn-delete">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="fo-layout">
+  <header class="fo-header">
+    <div class="container">
+      <div class="fo-header-content">
+        <div class="fo-brand">
+          <a routerLink="/fo/projets">
+            <span class="brand-icon">📊</span>
+            <span class="brand-text">ProjectFlow</span>
+          </a>
+        </div>
+
+        <nav class="fo-nav">
+          <a routerLink="/fo/projets" routerLinkActive="active">📋 Projets</a>
+          <a routerLink="/fo/board" routerLinkActive="active">📌 Board</a>
+          <a routerLink="/fo/dashboard" routerLinkActive="active">📈 Dashboard</a>
+          <a *ngIf="authService.isAdmin()" routerLink="/admin" routerLinkActive="active" class="admin-link">
+            ⚙️ Admin
+          </a>
+        </nav>
+
+        <div class="fo-user">
+          <span class="user-name">👤 {{ authService.currentUser()?.prenom || 'Utilisateur' }}</span>
+          <button (click)="logout()" class="btn-logout" title="Déconnexion">🚪 Déconnexion</button>
+        </div>
+
+        <button class="btn-mobile" (click)="toggleMobileMenu()">☰</button>
+      </div>
+
+      <div class="fo-mobile-menu" [class.open]="isMobileMenuOpen()">
+        <a routerLink="/fo/projets" routerLinkActive="active" (click)="toggleMobileMenu()">📋 Projets</a>
+        <a routerLink="/fo/board" routerLinkActive="active" (click)="toggleMobileMenu()">📌 Board</a>
+        <a routerLink="/fo/dashboard" routerLinkActive="active" (click)="toggleMobileMenu()">📈 Dashboard</a>
+        <a *ngIf="authService.isAdmin()" routerLink="/admin" routerLinkActive="active" (click)="toggleMobileMenu()">⚙️ Admin</a>
+        <button (click)="logout()" class="btn-logout-mobile">🚪 Déconnexion</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="fo-main">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <footer class="fo-footer">
+    <div class="container">
+      <p>© 2026 ProjectFlow - FrontOffice</p>
+    </div>
+  </footer>
+</div>

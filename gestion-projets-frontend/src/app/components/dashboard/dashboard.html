@@ -1,0 +1,103 @@
+<div class="container">
+  <h2>📈 Dashboard</h2>
+
+  <!-- Statistiques générales -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-info">
+        <h3>{{ totalProjets }}</h3>
+        <p>Projets</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <h3>{{ totalTaches }}</h3>
+        <p>Tâches totales</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">✔️</div>
+      <div class="stat-info">
+        <h3>{{ tachesTerminees }}</h3>
+        <p>Terminées</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🔄</div>
+      <div class="stat-info">
+        <h3>{{ tachesEnCours }}</h3>
+        <p>En cours</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-info">
+        <h3>{{ tauxAvancement }}%</h3>
+        <p>Taux d'avancement</p>
+        <div class="progress-bar">
+          <div class="progress-fill" 
+               [style.width.%]="tauxAvancement" 
+               [style.background]="getProgressColor()">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Répartition par priorité -->
+  <div class="section">
+    <h3>🎯 Répartition par priorité</h3>
+    <div class="priorite-grid">
+      <div class="priorite-item">
+        <span class="label">Critique</span>
+        <span class="value critique">{{ tachesCritiques }}</span>
+      </div>
+      <div class="priorite-item">
+        <span class="label">Haute</span>
+        <span class="value haute">{{ tachesHaute }}</span>
+      </div>
+      <div class="priorite-item">
+        <span class="label">Moyenne</span>
+        <span class="value moyenne">{{ tachesMoyenne }}</span>
+      </div>
+      <div class="priorite-item">
+        <span class="label">Basse</span>
+        <span class="value basse">{{ tachesBasse }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Évolution mensuelle -->
+  <div class="section">
+    <h3>📅 Évolution mensuelle</h3>
+    <div class="chart-container">
+      <div class="bar-chart">
+        <div *ngFor="let mois of evolutionMensuelle" class="bar-group">
+          <div class="bars">
+            <div class="bar-total" [style.height.%]="(mois.total / 20) * 100">
+              <span>{{ mois.total }}</span>
+            </div>
+            <div class="bar-terminees" [style.height.%]="(mois.terminees / 20) * 100">
+              <span>{{ mois.terminees }}</span>
+            </div>
+            <div class="bar-encours" [style.height.%]="(mois.enCours / 20) * 100">
+              <span>{{ mois.enCours }}</span>
+            </div>
+          </div>
+          <div class="bar-label">{{ mois.mois }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><span class="legend-color total"></span> Total</span>
+      <span><span class="legend-color terminees"></span> Terminées</span>
+      <span><span class="legend-color encours"></span> En cours</span>
+    </div>
+  </div>
+</div>

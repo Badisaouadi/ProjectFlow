@@ -1,0 +1,85 @@
+<div class="bo-layout">
+  <header class="bo-header">
+    <div class="bo-header-content">
+      <div class="bo-brand">
+        <button class="btn-toggle-sidebar" (click)="toggleSidebar()">☰</button>
+        <a routerLink="/admin">
+          <span class="brand-icon">⚙️</span>
+          <span class="brand-text">Admin<span class="brand-highlight">Panel</span></span>
+        </a>
+      </div>
+
+      <div class="bo-user">
+        <span class="user-avatar">{{ (authService.currentUser()?.prenom?.[0] || 'U') + (authService.currentUser()?.nom?.[0] || '') }}</span>
+        <span class="user-name">{{ authService.currentUser()?.prenom || 'Admin' }}</span>
+        <button (click)="logout()" class="btn-logout" title="Déconnexion">🚪</button>
+      </div>
+
+      <button class="btn-mobile" (click)="toggleMobileMenu()">☰</button>
+    </div>
+
+    <div class="bo-mobile-menu" [class.open]="isMobileMenuOpen()">
+      <a routerLink="/admin" routerLinkActive="active" (click)="toggleMobileMenu()">📊 Dashboard</a>
+      <a routerLink="/admin/projets" routerLinkActive="active" (click)="toggleMobileMenu()">📋 Projets</a>
+      <a routerLink="/admin/taches" routerLinkActive="active" (click)="toggleMobileMenu()">✅ Tâches</a>
+      <a routerLink="/admin/sous-taches" routerLinkActive="active" (click)="toggleMobileMenu()">📋 Sous-tâches</a>
+      <a routerLink="/admin/utilisateurs" routerLinkActive="active" (click)="toggleMobileMenu()">👥 Utilisateurs</a>
+      <a routerLink="/admin/statistiques" routerLinkActive="active" (click)="toggleMobileMenu()">📈 Statistiques</a>
+      <a routerLink="/fo/projets" routerLinkActive="active" (click)="toggleMobileMenu()">🏠 FrontOffice</a>
+      <button (click)="logout()" class="btn-logout-mobile">🚪 Déconnexion</button>
+    </div>
+  </header>
+
+  <div class="bo-body">
+    <aside class="bo-sidebar" [class.collapsed]="isSidebarCollapsed()">
+      <nav class="bo-nav">
+        <a routerLink="/admin" routerLinkActive="active">
+          <span class="nav-icon">📊</span>
+          <span class="nav-text">Dashboard</span>
+        </a>
+        <a routerLink="/admin/projets" routerLinkActive="active">
+          <span class="nav-icon">📋</span>
+          <span class="nav-text">Projets</span>
+        </a>
+        <a routerLink="/admin/taches" routerLinkActive="active">
+          <span class="nav-icon">✅</span>
+          <span class="nav-text">Tâches</span>
+        </a>
+        <a routerLink="/admin/sous-taches" routerLinkActive="active">
+          <span class="nav-icon">📋</span>
+          <span class="nav-text">Sous-tâches</span>
+        </a>
+        <a routerLink="/admin/utilisateurs" routerLinkActive="active">
+          <span class="nav-icon">👥</span>
+          <span class="nav-text">Utilisateurs</span>
+        </a>
+        <a routerLink="/admin/statistiques" routerLinkActive="active">
+          <span class="nav-icon">📈</span>
+          <span class="nav-text">Statistiques</span>
+        </a>
+      </nav>
+
+      <div class="bo-sidebar-footer">
+        <div class="admin-info">
+          <span class="admin-avatar">{{ authService.currentUser()?.prenom?.[0] || 'A' }}</span>
+          <div class="admin-details">
+            <span class="admin-name">{{ authService.currentUser()?.prenom || 'Admin' }}</span>
+            <span class="admin-role">{{ authService.currentUser()?.role || 'ADMIN' }}</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="bo-main">
+      <div class="container">
+        <router-outlet></router-outlet>
+        
+      </div>
+    </main>
+  </div>
+  <footer class="fo-footer">
+    <div class="container">
+      <p>© 2026 ProjectFlow - BackOffice</p>
+    </div>
+  </footer>
+</div>

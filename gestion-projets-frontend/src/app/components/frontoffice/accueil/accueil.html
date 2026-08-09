@@ -1,0 +1,45 @@
+<div class="fo-page">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <h1>👋 Bienvenue, {{ authService.currentUser()?.prenom || 'Utilisateur' }} !</h1>
+    <p>Gérez vos projets efficacement avec GestionProjets</p>
+    
+    <div class="hero-actions">
+      <a routerLink="/fo/projets" class="btn btn-primary">📋 Voir mes projets</a>
+      <a routerLink="/fo/dashboard" class="btn btn-secondary">📈 Mon tableau de bord</a>
+    </div>
+  </div>
+
+  <!-- Statistiques rapides -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-info">
+        <h3 id="totalProjets">0</h3>
+        <p>Projets</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <h3 id="totalTaches">0</h3>
+        <p>Tâches terminées</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-info">
+        <h3 id="tauxAvancement">0%</h3>
+        <p>Progression</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Projets récents -->
+  <div class="section">
+    <h3>📋 Projets récents</h3>
+    <div class="projets-list">
+      <p class="text-muted">Aucun projet récent</p>
+    </div>
+  </div>
+</div>

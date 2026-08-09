@@ -1,0 +1,48 @@
+<div class="bo-page">
+  <div class="page-header">
+    <div>
+      <h2>📋 Gestion des Projets</h2>
+      <p>Créez, modifiez et supprimez des projets</p>
+    </div>
+    <button routerLink="/admin/projets/new" class="btn btn-primary">
+      + Nouveau Projet
+    </button>
+  </div>
+
+  <div *ngIf="loading()" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading() && projets().length === 0" class="empty-state">
+    <p>Aucun projet trouvé</p>
+    <button routerLink="/admin/projets/new" class="btn btn-primary">Créer un projet</button>
+  </div>
+
+  <div class="table-container" *ngIf="!loading() && projets().length > 0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Tâches</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let projet of projets()">
+          <td>{{ projet.id }}</td>
+          <td><strong>{{ projet.nom }}</strong></td>
+          <td>{{ projet.description | slice:0:50 }}{{ (projet.description?.length || 0) > 50 ? '...' : '' }}</td>
+          <td><span class="badge badge-info">{{ projet.taches?.length || 0 }}</span></td>
+          <td>{{ projet.dateCreation | date:'dd/MM/yyyy' }}</td>
+          <td class="actions">
+            <button [routerLink]="['/admin/projets/edit', projet.id]" class="btn-edit">✏️</button>
+            <button (click)="deleteProjet(projet.id!)" class="btn-delete">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

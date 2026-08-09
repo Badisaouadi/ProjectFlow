@@ -1,0 +1,150 @@
+<div class="fo-board">
+  <div class="board-header">
+    <div>
+      <h2>📌 Board Kanban</h2>
+      <p>Glissez-déposez les tâches pour changer leur statut</p>
+    </div>
+    <div class="global-progress">
+      <span class="progress-label">Avancement global</span>
+      <div class="progress-track">
+        <div class="progress-fill" [style.width.%]="progressionGlobale"></div>
+      </div>
+      <span class="progress-percent">{{ progressionGlobale }}%</span>
+    </div>
+  </div>
+
+  <div *ngIf="error()" class="error-message">{{ error() }}</div>
+
+  <div *ngIf="loading()" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="board-columns" *ngIf="!loading()">
+    <div class="column" *ngFor="let statut of statuts">
+      <div class="column-header" [class]="'statut-' + statut.toLowerCase()">
+        <span class="column-title">{{ statutLabels[statut] }}</span>
+        <span class="column-count">{{ getCountByStatut(statut) }}</span>
+      </div>
+
+      <div 
+        class="column-body"
+        cdkDropList
+        [cdkDropListData]="getTachesByStatut(statut)"
+        [cdkDropListConnectedTo]="getConnectedDropLists()"
+        (cdkDropListDropped)="drop($event, statut)"
+        [id]="statut"
+        [class.dragging]="isDragging()"
+      >
+        <div 
+          class="tache-card"
+          *ngFor="let tache of getTachesByStatut(statut)"
+          cdkDrag
+          [cdkDragData]="tache"
+          (cdkDragStarted)="onDragStarted()"
+          (cdkDragEnded)="onDragEnded()"
+          (click)="openModal(tache)"
+          [class.dragging]="isDragging()"
+        >
+          <div class="drag-handle">⠿</div>
+          <div class="tache-content">
+            <div class="tache-top">
+              <h4>{{ tache.titre }}</h4>
+              <span class="priorite-dot" [title]="tache.priorite">
+                {{ getPrioriteIcon(tache.priorite) }}
+              </span>
+            </div>
+            <p class="tache-desc">{{ tache.description | slice:0:70 }}{{ (tache.description?.length || 0) > 70 ? '...' : '' }}</p>
+            <div class="tache-footer">
+              <span class="tache-date" *ngIf="tache.dateEcheance">
+                📅 {{ tache.dateEcheance | date:'dd/MM/yyyy' }}
+              </span>
+              <span class="tache-sous" *ngIf="tache.sousTaches?.length">
+                📋 {{ tache.sousTaches?.length }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="getTachesByStatut(statut).length === 0" class="empty-column">
+          <span>📭</span>
+          <p>Aucune tâche</p>
+          <small>Déposez une tâche ici</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" *ngIf="showModal()" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="selectedTache() as tache">
+      <div class="modal-header">
+        <h3>{{ tache.titre }}</h3>
+        <button class="modal-close" (click)="closeModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-desc">{{ tache.description || 'Aucune description' }}</p>
+
+        <div class="modal-tags">
+          <span class="tag" [class]="'statut-' + tache.statut.toLowerCase()">
+            {{ statutLabels[tache.statut] }}
+          </span>
+          <span class="tag priorite">{{ getPrioriteIcon(tache.priorite) }} {{ tache.priorite }}</span>
+          <span class="tag" *ngIf="tache.dateEcheance">
+            📅 {{ tache.dateEcheance | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+
+        <!-- Sous-tâches -->
+        <div class="sous-taches-section">
+          <div class="sous-header">
+            <h4>📋 Sous-tâches</h4>
+            <span class="sous-progress" *ngIf="sousTaches().length > 0">
+              {{ getSousTacheProgress() }}%
+            </span>
+          </div>
+
+          <div class="sous-progress-bar" *ngIf="sousTaches().length > 0">
+            <div class="sous-progress-fill" [style.width.%]="getSousTacheProgress()"></div>
+          </div>
+
+          <div *ngIf="loadingSousTaches()" class="mini-spinner-wrap">
+            <div class="mini-spinner"></div>
+          </div>
+
+          <div *ngIf="!loadingSousTaches() && sousTaches().length === 0" class="empty-sous">
+            Aucune sous-tâche pour le moment
+          </div>
+
+          <div class="sous-list" *ngIf="!loadingSousTaches()">
+            <div *ngFor="let sous of sousTaches()" class="sous-item">
+              <label class="sous-check">
+                <input type="checkbox" [checked]="sous.terminee" (change)="toggleSousTache(sous)" />
+                <span [class.terminee]="sous.terminee">{{ sous.titre }}</span>
+              </label>
+              <button class="btn-remove-sous" (click)="deleteSousTache(sous.id!)">🗑️</button>
+            </div>
+          </div>
+
+          <!-- Ajouter une sous-tâche -->
+          <div class="add-sous-section">
+            <button *ngIf="!showNewSousTacheForm()" (click)="showNewSousTacheForm.set(true)" class="btn-add-sous">
+              + Ajouter une sous-tâche
+            </button>
+
+            <div *ngIf="showNewSousTacheForm()" class="add-sous-form">
+              <input
+                type="text"
+                [(ngModel)]="newSousTacheTitre"
+                placeholder="Titre de la sous-tâche"
+                (keyup.enter)="addSousTache()"
+              />
+              <button (click)="addSousTache()" class="btn-confirm-sous">✓</button>
+              <button (click)="showNewSousTacheForm.set(false)" class="btn-cancel-sous">✕</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
