@@ -22,6 +22,10 @@ jobs:
           cache: maven
           cache-dependency-path: GestionProjets/backend/gestion-projets/pom.xml
 
+      - name: Rendre mvnw exécutable
+        working-directory: GestionProjets/backend/gestion-projets
+        run: chmod +x mvnw
+
       - name: Compiler le backend
         working-directory: GestionProjets/backend/gestion-projets
         run: ./mvnw clean compile
@@ -42,7 +46,7 @@ jobs:
 
       - name: Installer les dépendances
         working-directory: gestion-projets-frontend
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Build de production
         working-directory: gestion-projets-frontend
